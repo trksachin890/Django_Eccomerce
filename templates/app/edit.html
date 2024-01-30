@@ -1,0 +1,20 @@
+<!-- edit.html -->
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <h2>Edit Cart Item</h2>
+    <form method="post">
+        {% csrf_token %}
+        
+        <label for="id_quantity">Quantity:</label>
+        <input type="number" name="quantity" id="id_quantity" value="{{ cart.quantity }}" min="1" required>
+        
+        <img src="{{ cart.product_id.product_image.url }}" alt="{{ cart.product_id.product_name }} Image" style="max-width: 100px;">
+        
+        <button type="submit">Update</button>
+    </form>
+
+    {% if error_message %}
+        <p class="error">{{ error_message }}</p>
+    {% endif %}
+{% endblock %}

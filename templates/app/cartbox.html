@@ -1,0 +1,48 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+  <h2>Your Cart</h2>
+  {% if cart_items %}
+    <div id="cartTableContainer" style="text-align: center;">
+      <table id="cartTable" style="border-collapse: collapse; width: 80%; margin: auto;">
+        <thead>
+          <tr>
+            <th style="border: 1px solid #ddd; padding: 8px;">Product</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">Quantity</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">Price</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">Image</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for cart_item in cart_items %}
+            <tr>
+              <td style="border: 1px solid #ddd; padding: 8px;">{{ cart_item.product_id.product_name }}</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">{{ cart_item.quantity }}</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">{{ cart_item.product_id.product_price }}</td>
+              <td style="border: 1px solid #ddd; padding: 8px;"><img src="{{ cart_item.product_id.product_image.url }}" alt="{{ cart_item.product_id.product_name }} Image" style="max-width: 100px;"></td>
+              <td style="border: 1px solid #ddd; padding: 8px;">
+                <a href="{% url 'edit' id=cart_item.id %}" class="btn btn-info">Edit</a>
+                <a href="{% url 'delete' id=cart_item.id %}" class="btn btn-danger">Delete</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div style="text-align: center; margin-top: 20px;">
+      <button id="orderButton" class="btn btn-success">Order</button>
+    </div>
+
+    <script>
+      // You can add JavaScript functions or events here
+      document.getElementById('orderButton').addEventListener('click', function() {
+        window.location.href = "{% url 'order' %}";
+      });
+    </script>
+
+  {% else %}
+    <p>Your cart is empty.</p>
+  {% endif %}
+ 
+{% endblock %}

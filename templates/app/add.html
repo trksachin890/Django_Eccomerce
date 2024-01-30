@@ -1,0 +1,56 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}Add{% endblock title %}
+
+{% block content %}
+hii i am add
+{% load cart %}
+<style>
+   .product {
+      display: inline-block;
+      margin: 10px;
+      text-align: center;
+   }
+</style>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+   $(document).ready(function () {
+      $(".quantity-change").click(function () {
+         var inputElement = $(this).siblings("input[type='number']");
+         var currentValue = parseInt(inputElement.val());
+         var changeAmount = parseInt($(this).data("change"));
+         var newValue = currentValue + changeAmount;
+         if (newValue >= 1) {
+            inputElement.val(newValue);
+         }
+      });
+   });
+</script>
+
+<div class="container">
+   <div class="row">
+      {% for product in products %}
+      <div class="product">
+         <img src="{{ product.product_image.url }}">
+         <h6><strong>{{ product.product_name }} - {{ product.product_price }}</strong></h6>
+
+         <div class="card-footer p-0 row no-gutters" id="{{ product.product_id }}">
+            <form method="post" action="{% url 'add_to_cart' product_id=product.id %}">
+               {% csrf_token %}
+               <label for="quantity">Quantity:</label>
+               <div class="quantity-controls">
+                  <button type="button" class="quantity-change" data-change="-">-</button>
+                  <input type="number" name="quantity" id="quantity" value="1" min="1" required>
+                  <button type="button" class="quantity-change" data-change="+">+</button>
+               </div>
+               <input type="submit" value="Add">
+            </form>
+         </div>
+
+      </div>
+      {% endfor %}
+   </div>
+</div>
+{% endblock content %}
